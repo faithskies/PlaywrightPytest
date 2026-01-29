@@ -1,0 +1,32 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master, test-branch ]
+  pull_request:
+    branches: [ main, master, test-branch ]
+jobs:   
+  Playwright_pytest_Tests:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13.7'
+ 
+    - name: Install Dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install playwright
+        playwright install
+        pip install pytest-playwright
+        pip install pytest-mock
+        pip install pytest-html
+        pip install requests
+ 
+    - name: Run Tests with Pytest
+      run: pytest # --html=report1.html
